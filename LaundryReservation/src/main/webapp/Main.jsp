@@ -8,13 +8,13 @@
 <meta name = "viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="navbar-top-fixed.css?a" rel="stylesheet">
-<title>세탁방</title>
+<title>세탁실</title>
 </head>
 <body>
 <!-- nav -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
 <div class="container-fluid">
-	<a href="#" class="navbar-brand">세탁기 예약 및 좌석현황 사이트</a>
+	<a href="#" class="navbar-brand">SP 무인 세탁실</a>
 	<!-- 반응형 우측 아이콘 -->
 	<button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
 	aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@
 				<a id="noticeHeader" style="margin-left:2%; font-size:20px; font-weight : bold; cursor: pointer; color:black;">공지사항</a>
 				<a id="qnaHeader" style="margin-left:2%;font-size:20px;font-weight: bold;color:#BDBDBD;cursor: pointer;">Q&A</a>
 			</header>
-			<div style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;">
+			<div style=padding:10px;">
 			<table class="table" id="noticetable" style="margin:0";>
 			<tr class="notice_tr">
 				<td style="border-top:none;">공지사항 예시</td>
@@ -94,7 +94,7 @@
 		</div>
 		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 div_right">
 			<div class="reservation">
-			<img src="img/example.png" class="img-fluid max-width: 100%" alt="">
+			<img src="img/example.png?a" class="img-fluid max-width: 100%" alt="">
 			</div>
 		</div>
 	</div>
