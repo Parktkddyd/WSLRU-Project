@@ -31,7 +31,6 @@
 		 <li class="nav-item">
             <a class="nav-link" href="reservation.jsp">예약하기</a>
 		</li>
-<<<<<<< HEAD
           <!-- 만일 로그인이 되어 있지 않다면  하단에 user session에 따른 java코드 추가-->
  		  <%
           	if(sessionID == null){
@@ -74,7 +73,6 @@
         <%
         	}
         %>
-=======
 		<li class="nav-item dropdown">
 		 	<a class="nav-link dropdown-toggle" href="#" id="loginDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             	회원정보
@@ -88,7 +86,6 @@
             <li><a class="dropdown-item" href="join.jsp">로그아웃</a></li>
           </ul>
         </li>
->>>>>>> refs/remotes/origin/main
 	</ul>	
 	<!-- 추후에 검색기능 만들때 따로 수정 예정 -->
 	<form class="d-flex">
