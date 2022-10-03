@@ -116,7 +116,7 @@ body {
     <table class="table" style="text-align: center;">
     <thead>
     <tr class="table-info">
-    <th scope="col">ID</th><th scope="col">이름</th><th scope="col">생년월일</th><th scope="col">성별</th><th scope="col">소속</th><th scope="col">휴대폰번호</th><th scope="col">승인여부</th>
+    <th scope="col">회원번호</th><th scope="col">ID</th><th scope="col">이름</th><th scope="col">생년월일</th><th scope="col">성별</th><th scope="col">소속</th><th scope="col">휴대폰번호</th><th scope="col">승인여부</th>
     </tr>
     </thead>
     <tbody>
@@ -126,6 +126,7 @@ body {
     	for(int i=0; i<list.size(); i++){
     %>
     	<tr>
+    	<td><%=list.get(i).getUserNo() %></td>
     	<td><%=list.get(i).getUserID() %></td>
     	<td><%=list.get(i).getUserName() %></td>
 		<td><%=list.get(i).getUserBirth() %></td>

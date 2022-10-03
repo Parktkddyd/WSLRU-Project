@@ -12,7 +12,6 @@ public class UserDAO {
 	String dbPass = "root";
 	String url = "jdbc:mysql://localhost:3306/laundry";
 	Connection con; // 데이터베이스에 접근할 수 있도록 설정
-	PreparedStatement pstmt; // 데이터베이스에서 쿼리를 실행시켜주는 객체
 	ResultSet rs;//데이터베이스의 테이블의 결과를 리턴받아 자바에 저장해주는 객체
 	
 	//
@@ -33,7 +32,7 @@ public class UserDAO {
 		getCon();
 		//쿼리문 작성
 		String sql = "SELECT userpassword, useravailable from USER where userid = ?";
-		pstmt = con.prepareStatement(sql);
+		PreparedStatement pstmt = con.prepareStatement(sql);
 		pstmt.setString(1, id);
 		rs = pstmt.executeQuery();
 		if(rs.next()) {
@@ -55,13 +54,30 @@ public class UserDAO {
 		return -2; // 데이터베이스 오류
 	}
 	
+	public int getNextUser() {
+		try {
+			getCon();
+			String sql = "SELECT userno FROM USER ORDER BY userno DESC";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery(sql);
+			if(rs.next()) {
+				return rs.getInt(1) + 1;
+			}
+			return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1; //데이터베이스 오류
+	} // 회원가입시 신청 순서를 번호로 나타내기 위함
+	
 	public int join(User user) {
 		try {
 			getCon(); // 커넥션
 			
-			String sql = "INSERT INTO USER VALUES(?,?,?,?,?,?,?,?,?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(2, user.getUserID());
+			String sql = "INSERT INTO USER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user.getUserID());
+			pstmt.setInt(2, getNextUser());
 			pstmt.setString(3, user.getUserPassword());
 			pstmt.setString(4, user.getUserName());
 			pstmt.setString(5, user.getUserBirth());
@@ -69,11 +85,10 @@ public class UserDAO {
 			pstmt.setString(7, user.getUserDept());
 			pstmt.setString(8, user.getUserPhoneNumber());
 			pstmt.setString(9, user.getUserEmail());
-			pstmt.setString(10, "0");
-			
+			pstmt.setInt(10, 0);
 			return pstmt.executeUpdate(); //0이상의 반환값을 가짐.
 		}catch(Exception e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		return -1; //데이터베이스 오류
 	}
@@ -82,38 +97,14 @@ public class UserDAO {
 		ArrayList<User> list = new ArrayList<User>();
 		try {
 			getCon();
-			String sql = "SELECT * FROM USER WHERE useravailable = 0 LIMIT 10 OFFSET ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, (pageNumber-1)*10); //pageNumber1 이면 
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				User user = new User();
-				user.setUserID(rs.getString(1));
-				user.setUserName(rs.getString(3));
-				user.setUserBirth(rs.getString(4));
-				user.setUserGender(rs.getString(5));
-				user.setUserDept(rs.getString(6));
-				user.setUserPhoneNumber(rs.getString(7));
-				list.add(user);
-			}
-		}catch(Exception e){
-			e.getStackTrace();
-		}
-		
-		return list;
-	}
-	
-	public ArrayList<User> getRejectList(int pageNumber){
-		ArrayList<User> list = new ArrayList<User>();
-		try {
-			getCon();
-			String sql = "SELECT * FROM USER WHERE useravailable = -1 LIMIT 10 OFFSET ?";
-			pstmt = con.prepareStatement(sql);
+			String sql = "SELECT * FROM USER WHERE useravailable = 0 ORDER BY userno DESC LIMIT 10 OFFSET ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, (pageNumber-1)*10);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				User user = new User();
 				user.setUserID(rs.getString(1));
+				user.setUserNo(rs.getInt(2));
 				user.setUserName(rs.getString(3));
 				user.setUserBirth(rs.getString(4));
 				user.setUserGender(rs.getString(5));
@@ -122,7 +113,32 @@ public class UserDAO {
 				list.add(user);
 			}
 		}catch(Exception e){
-			e.getStackTrace();
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	public ArrayList<User> getRejectList(int pageNumber){
+		ArrayList<User> list = new ArrayList<User>();
+		try {
+			getCon();
+			String sql = "SELECT * FROM USER WHERE useravailable = -1 ORDER BY userno DESC LIMIT 10 OFFSET ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, (pageNumber-1)*10);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				User user = new User();
+				user.setUserID(rs.getString(1));
+				user.setUserNo(rs.getInt(2));
+				user.setUserName(rs.getString(3));
+				user.setUserBirth(rs.getString(4));
+				user.setUserGender(rs.getString(5));
+				user.setUserDept(rs.getString(6));
+				user.setUserPhoneNumber(rs.getString(7));
+				list.add(user);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
 		return list;
@@ -132,12 +148,12 @@ public class UserDAO {
 		try {
 			getCon();
 			String sql = "UPDATE USER SET useravailable=? where userid = ?";
-			pstmt = con.prepareStatement(sql);
+			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Permission);
 			pstmt.setString(2, userID);
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}		
 		return -1; //DB오류
 	}
@@ -146,12 +162,12 @@ public class UserDAO {
 		try {
 			getCon();
 			String sql = "DELETE FROM USER  WHERE useravailable = ? and userid = ?";
-			pstmt = con.prepareStatement(sql);
+			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Permission);
 			pstmt.setString(2, userID);
 			return pstmt.executeUpdate();
 		}catch(Exception e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		return -1; //DB오류
 	}
