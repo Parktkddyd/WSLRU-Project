@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,6 +10,20 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="navbar-top-fixed.css?a" rel="stylesheet">
 <title>세탁실</title>
+<style>
+	.form-Reservation{
+		margin-top: 5rem;
+	}
+	table td{
+		height : 500px;
+	}
+	.card{
+		margin: 0 auto;
+		margin-top: 5rem;
+		width : 18rem;
+		height : 18rem;
+	}
+</style>
 </head>
 <body>
 
@@ -16,6 +31,13 @@
 	String sessionID = null;
 	if(session.getAttribute("sessionID") != null)
 		sessionID = (String)session.getAttribute("sessionID");
+	else{
+		PrintWriter Out = response.getWriter();
+		Out.println("<script>");
+		Out.println("alert('로그인을 해주세요')");
+		Out.println("location.href='login.jsp'");
+		Out.println("</script>");
+	}
 %>
 <!-- nav -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
@@ -42,6 +64,7 @@
  		  	<ul class="dropdown-menu dropdown-menu-login" aria-labelledby="loginDropdownMenuLink">
 	            <li><a class="dropdown-item" href="login.jsp">로그인</a></li>
 	            <li><a class="dropdown-item" href="join.jsp">회원가입</a></li>
+	        </ul>
             <%
           	} else{
             %>
@@ -53,10 +76,11 @@
             <!-- 로그인이 된 상태라면 하단에 user session에 따른 java코드 추가-->
             <li><a class="dropdown-item" href="memberinfo.jsp">내 정보</a></li>
             <li><a class="dropdown-item" href="logoutProc.jsp">로그아웃</a></li>
+            </ul>
             <%
             	}
  		  	%>
-          </ul>
+          
         </li>
         <% 
         	if(sessionID!=null && sessionID.equals("admin")){
@@ -83,57 +107,38 @@
 </div>
 </nav>
 <!-- end nav -->
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 div_left">
-			<div class="bulletin">
-			<header class="sectionHeader">
-				<a id="noticeHeader" style="margin-left:2%; font-size:20px; font-weight : bold; cursor: pointer; color:black;">공지사항</a>
-				<a id="qnaHeader" style="margin-left:2%;font-size:20px;font-weight: bold;color:#BDBDBD;cursor: pointer;">Q&A</a>
-			</header>
-			<div style=padding:10px;">
-			<table class="table" id="noticetable" style="margin:0";>
-			<tr class="notice_tr">
-				<td style="border-top:none;">공지사항 예시</td>
-			</tr>
-			<tr class="notice_tr">
-				<td style="border-top:none;">공지사항 예시</td>
-			</tr>
-			<tr class="notice_tr">
-				<td style="border-top:none;">공지사항 예시</td>
-			</tr>
-			<tr class="notice_tr">
-				<td style="border-top:none;">공지사항 예시</td>
-			</tr>
-			<tr class="notice_tr">
-				<td style="border-top:none;">공지사항 예시</td>
-			</tr>
-			<tr class="qna_tr" style="display:none;">
-				<td style="border-top:none;">Q&A 예시</td>
-			</tr>
-			<tr class="qna_tr" style="display:none;">
-				<td style="border-top:none;">Q&A 예시</td>
-			</tr>
-			<tr class="qna_tr" style="display:none;">
-				<td style="border-top:none;">Q&A 예시</td>
-			</tr>
-			<tr class="qna_tr" style="display:none;">
-				<td style="border-top:none;">Q&A 예시</td>
-			</tr>
-			<tr class="qna_tr" style="display:none;">
-				<td style="border-top:none;">Q&A 예시</td>
-			</tr>
-			</table>
-			</div>
-			</div>
-		</div>
-		<div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 div_right">
-			<div class="reservation">
-			<img src="img/example.png?a" class="img-fluid max-width: 100%" alt="">
-			</div>
-		</div>
-	</div>
-</div>
+<main class="form-Reservation">
+    <table class="table table-borderless" style="text-align: center;">
+    	<tr>
+	    	<td style="border-right : 1px solid;">
+	    		<div class="card border-primary">
+				  <div class="card-header text-white bg-primary">예약</div>
+				  <div class="card-body text-primary">
+				    <ul class="list-unstyled">
+				    <li>예약을 하시려면</li>
+				    <li>아래의 <b>예약하기</b> 버튼을</li>
+				    <li>클릭해 주세요.</li>
+				    </ul>
+				  </div>
+				  <a href="#" class="btn btn-primary">예약하기</a>
+				</div>
+	    	</td>
+	    	<td>
+	    		<div class="card border-primary">
+				  <div class="card-header text-white bg-primary">예약내역</div>
+				  <div class="card-body text-primary">
+				    <ul class="list-unstyled">
+				    <li>예약내역을 확인하시려면</li>
+				    <li>아래의 <b>내역확인하기</b> 버튼을</li>
+				    <li>클릭해 주세요.</li>
+				    </ul>
+				  </div>
+				  <a href="#" class="btn btn-primary">내역확인하기</a>
+				</div>
+	    	</td>
+    	</tr>
+    </table>
+</main>
 <footer class="container fluid justify-content-center fixed-bottom">
 <p align="center">CopyRight 2022. SANGYONG PARK. All rights reserved.</p>
 </footer>
@@ -142,21 +147,5 @@
 <!-- Bootstrap core javascript -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script>
-
-$('#noticeHeader').on('click',function(){
-	$(this).css('color','black');
-	$('#qnaHeader').css('color','#BDBDBD');
-	$('.qna_tr').css('display','none');
-	$('.notice_tr').show();
-});
-
-$('#qnaHeader').on('click',function(){
-	$(this).css('color','black');
-	$('#noticeHeader').css('color','#BDBDBD');
-	$('.notice_tr').css('display','none');
-	$('.qna_tr').show();
-});
-</script>
 </body>
 </html>

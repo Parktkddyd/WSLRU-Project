@@ -32,21 +32,31 @@
 <%
 		}
 	}
+	UserDAO user = new UserDAO();
+	
+	int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+	int blockNumber = Integer.parseInt(request.getParameter("blockNumber"));
+	int blockSize = 5;
 %>
 
 <%
 	request.setCharacterEncoding("UTF-8");
 	String userID = request.getParameter("userID");
 	int Permission = Integer.parseInt(request.getParameter("Permission"));
-	
-	UserDAO user = new UserDAO();
 	int result = user.Permission(userID, Permission);
+	int listSize = user.getRejectList(pageNumber).size();
 	if(result >0){
 		if(Permission == 1){
 			PrintWriter Out =response.getWriter();
 			Out.println("<script>");
 			Out.println("alert('승인처리가 정상적으로 되었습니다.')");
-			Out.println("location.href='joinReject.jsp'");
+			if(user.getRejectList(pageNumber).isEmpty()){/*현재 페이지에서 보여지는 리스트가 0개일 때 */
+				if(pageNumber % blockSize == 0) /* 현재 페이지가 블락의 끝 번호일 경우 페이지 번호와 블락번호 같이 감소*/
+					Out.println("location.href='joinReject.jsp?pageNumber="+ --pageNumber + "&blockNumber="+ --blockNumber +"'");
+				else/* 아니면 페이지 번호만 감소 */
+					Out.println("location.href='joinReject.jsp?pageNumber="+ --pageNumber + "&blockNumber="+ blockNumber +"'");
+			}else/* 리스트가 0개가 아니라면 원래 페이지 번호와 블락 번호로 이동 */
+				Out.println("location.href='joinReject.jsp?pageNumber="+pageNumber + "&blockNumber="+ blockNumber +"'");
 			Out.println("</script>");
 		}else{
 			int delResult = user.DeleteUser(userID, Permission);
@@ -54,7 +64,13 @@
 			PrintWriter Out =response.getWriter();
 			Out.println("<script>");
 			Out.println("alert('삭제처리가 정상적으로 되었습니다.')");
-			Out.println("location.href='joinReject.jsp'");
+			if(user.getRejectList(pageNumber).isEmpty()){/*현재 페이지에서 보여지는 리스트가 0개일 때 */
+				if(pageNumber % blockSize == 0) /* 현재 페이지가 블락의 끝 번호일 경우 페이지 번호와 블락번호 같이 감소*/
+					Out.println("location.href='joinReject.jsp?pageNumber="+ --pageNumber + "&blockNumber="+ --blockNumber +"'");
+				else/* 아니면 페이지 번호만 감소 */
+					Out.println("location.href='joinReject.jsp?pageNumber="+ --pageNumber + "&blockNumber="+ blockNumber +"'");
+			}else/* 리스트가 0개가 아니라면 원래 페이지 번호와 블락 번호로 이동 */
+				Out.println("location.href='joinReject.jsp?pageNumber="+pageNumber + "&blockNumber="+ blockNumber +"'");
 			Out.println("</script>");
 			}
 		}

@@ -14,7 +14,6 @@ public class UserDAO {
 	Connection con; // 데이터베이스에 접근할 수 있도록 설정
 	ResultSet rs;//데이터베이스의 테이블의 결과를 리턴받아 자바에 저장해주는 객체
 	
-	//
 	public void getCon(){
 		try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -49,7 +48,7 @@ public class UserDAO {
 		}
 		return -1; //아이디가 없음
 		}catch(Exception e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		return -2; // 데이터베이스 오류
 	}
@@ -74,7 +73,7 @@ public class UserDAO {
 		try {
 			getCon(); // 커넥션
 			
-			String sql = "INSERT INTO USER VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO USER VALUES(?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user.getUserID());
 			pstmt.setInt(2, getNextUser());
@@ -86,6 +85,7 @@ public class UserDAO {
 			pstmt.setString(8, user.getUserPhoneNumber());
 			pstmt.setString(9, user.getUserEmail());
 			pstmt.setInt(10, 0);
+			
 			return pstmt.executeUpdate(); //0이상의 반환값을 가짐.
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -97,19 +97,19 @@ public class UserDAO {
 		ArrayList<User> list = new ArrayList<User>();
 		try {
 			getCon();
-			String sql = "SELECT * FROM USER WHERE useravailable = 0 ORDER BY userno DESC LIMIT 10 OFFSET ?";
+			String sql = "SELECT * FROM USER WHERE useravailable = 0 ORDER BY userno LIMIT 10 OFFSET ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, (pageNumber-1)*10);
+			pstmt.setInt(1, (pageNumber-1)*10); //pageNumber1 이면 
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				User user = new User();
 				user.setUserID(rs.getString(1));
 				user.setUserNo(rs.getInt(2));
-				user.setUserName(rs.getString(3));
-				user.setUserBirth(rs.getString(4));
-				user.setUserGender(rs.getString(5));
-				user.setUserDept(rs.getString(6));
-				user.setUserPhoneNumber(rs.getString(7));
+				user.setUserName(rs.getString(4));
+				user.setUserBirth(rs.getString(5));
+				user.setUserGender(rs.getString(6));
+				user.setUserDept(rs.getString(7));
+				user.setUserPhoneNumber(rs.getString(8));
 				list.add(user);
 			}
 		}catch(Exception e){
@@ -118,11 +118,12 @@ public class UserDAO {
 		
 		return list;
 	}
+	
 	public ArrayList<User> getRejectList(int pageNumber){
 		ArrayList<User> list = new ArrayList<User>();
 		try {
 			getCon();
-			String sql = "SELECT * FROM USER WHERE useravailable = -1 ORDER BY userno DESC LIMIT 10 OFFSET ?";
+			String sql = "SELECT * FROM USER WHERE useravailable = -1 ORDER BY userno LIMIT 10 OFFSET ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, (pageNumber-1)*10);
 			rs = pstmt.executeQuery();
@@ -130,11 +131,11 @@ public class UserDAO {
 				User user = new User();
 				user.setUserID(rs.getString(1));
 				user.setUserNo(rs.getInt(2));
-				user.setUserName(rs.getString(3));
-				user.setUserBirth(rs.getString(4));
-				user.setUserGender(rs.getString(5));
-				user.setUserDept(rs.getString(6));
-				user.setUserPhoneNumber(rs.getString(7));
+				user.setUserName(rs.getString(4));
+				user.setUserBirth(rs.getString(5));
+				user.setUserGender(rs.getString(6));
+				user.setUserDept(rs.getString(7));
+				user.setUserPhoneNumber(rs.getString(8));
 				list.add(user);
 			}
 		}catch(Exception e){
@@ -142,6 +143,42 @@ public class UserDAO {
 		}
 		
 		return list;
+	}
+	
+	public int getJoinCount() {
+		try {
+			int rowCount = 0;
+			getCon();
+			String sql = "SELECT COUNT(*) FROM USER WHERE useravailable = 0";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				rowCount = rs.getInt(1);
+				return rowCount;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
+	public int getRejectCount() {
+		try {
+			int rowCount = 0;
+			getCon();
+			String sql = "SELECT COUNT(*) FROM USER WHERE useravailable = -1";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				rowCount = rs.getInt(1);
+				return rowCount;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 	
 	public int Permission(String userID, int Permission) {

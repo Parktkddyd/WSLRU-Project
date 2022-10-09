@@ -54,10 +54,30 @@ body {
 		}
 	}
 	
+	UserDAO user = new UserDAO(); //DAO 객체 생성
+	
 	int pageNumber = 1; //기본 첫페이지
+	int blockNumber = 1; // 기본 블럭;
 	if(request.getParameter("pageNumber") != null){
 		pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 	}
+	if(request.getParameter("blockNumber") != null){
+		blockNumber = Integer.parseInt(request.getParameter("blockNumber"));
+	}
+	/* 총 레코드 수 */
+	int rowCount = user.getRejectCount();
+	
+	/* 총 페이지 수 구하는 과정 */
+	int pageSize = 10; //페이지는 레코드 10개 단위로
+	int pageCount = rowCount / pageSize;
+	if(rowCount % pageSize > 0)
+		pageCount++;
+	
+	/* 총 블럭 수 구하는 과정 */
+	int blockSize = 5; // 블럭은 5페이지 단위로
+	int blockCount = pageCount / blockSize;
+	if(pageCount % blockSize > 0)
+		blockCount++;
 %>
 
 <!-- nav -->
@@ -116,12 +136,11 @@ body {
     <table class="table" style="text-align: center;">
     <thead>
     <tr class="table-info">
-    <th scope="col">회원번호</th><th scope="col">ID</th><th scope="col">이름</th><th scope="col">생년월일</th><th scope="col">성별</th><th scope="col">소속</th><th scope="col">휴대폰번호</th><th scope="col">승인여부</th>
+     <th scope="col">회원번호</th><th scope="col">ID</th><th scope="col">이름</th><th scope="col">생년월일</th><th scope="col">성별</th><th scope="col">소속</th><th scope="col">휴대폰번호</th><th scope="col">승인여부</th>
     </tr>
     </thead>
     <tbody>
     <%
-    	UserDAO user = new UserDAO();
     	ArrayList<User> list = user.getRejectList(pageNumber);
     	for(int i=0; i<list.size(); i++){
     %>
@@ -135,14 +154,59 @@ body {
 		<td><%=list.get(i).getUserPhoneNumber() %></td>
 		<td>
 		<div class="btn-group" role="group" aria-label="Permission">
-		<a onclick="return confirm('재승인하시겠습니까?')" href="joinManageProc.jsp?userID=<%= list.get(i).getUserID()%>&Permission=1" class="btn btn-primary">승인</a>
-		<a onclick="return confirm('삭제하시겠습니까?')" href="joinRejectProc.jsp?userID=<%=list.get(i).getUserID()%>&Permission=-1" class="btn btn-danger">삭제</a>
+		<a onclick="return confirm('재승인하시겠습니까?')" href="joinRejectProc.jsp?pageNumber=<%=pageNumber%>&blockNumber=<%=blockNumber%>&userID=<%=list.get(i).getUserID()%>&Permission=1" class="btn btn-primary">승인</a>
+			<a onclick="return confirm('삭제하시겠습니까?')" href="joinRejectProc.jsp?pageNumber=<%=pageNumber%>&blockNumber=<%=blockNumber%>&userID=<%=list.get(i).getUserID()%>&Permission=-1" class="btn btn-danger">삭제</a>
 		</div>
 		</td>
     	</tr>
     <%
     	}
     %>
+    <tr>
+    <!-- 페이징 -->
+    <td colspan="8">
+     <div class="btn-toolbar" style="display:inline-block;" role="toolbar" aria-label="joinReject-PagingButton">
+  		<div class="btn-group me-2" role="group">
+    <%
+    	int startPage = ((pageNumber-1)/blockSize)*blockSize +1;
+    	int endPage = startPage + blockSize - 1;
+    	if(endPage > pageCount){
+    		endPage = pageCount;
+    	}
+    	if(rowCount > 0){	
+    		if(startPage > blockSize){
+    %>
+    	<a class="btn btn-outline-primary" href="joinReject.jsp?pageNumber=<%=(blockNumber-1)*5 %>&blockNumber=<%=blockNumber-1%>" role="button">이전</a>
+    <% 			
+    		}
+    %>
+    
+    <%
+    	for(int i = startPage; i<= endPage; i++){
+    		if(i == pageNumber){
+    %>
+    	 <button type="button" class="btn btn-primary"><%=i%></button>
+   		
+   	<% 
+    		}else{
+    %>
+    	<a class="btn btn-outline-primary" href="joinReject.jsp?pageNumber=<%=i%>&blockNumber=<%=blockNumber%>" role="button"><%=i%></a>
+    <%			
+    			}
+    		}
+    %>
+    <%
+    	if(endPage < pageCount){
+    %>
+    	<a class="btn btn-outline-primary" href="joinReject.jsp?pageNumber=<%=(blockNumber*5)+1 %>&blockNumber=<%=blockNumber+1 %>" role="button">다음</a>
+    <%    
+    	}
+    }
+    %>
+    	</div>
+    </div>
+    </td>
+    </tr>
     </tbody>
     </table>
 </main>

@@ -3,6 +3,7 @@ package user;
 public class User {
 	private String userID;
 	private int userNo;
+	
 	private String userPassword;
 	private String userName;
 	private String userGender;
