@@ -1,4 +1,4 @@
-LaundryReservation-Project
+WSLRU(WebSite to Serve Laundry RealTime Usage)
 ==========================
 # 목차
 
@@ -10,7 +10,7 @@ LaundryReservation-Project
 ### 4. 화면 데모
 ### 5. 결론 및 기대효과
 ### 6. 참고 자료
-
+#
 
 # 1. 개요
 + 공동 주거공간에서 생활하는 사람들은 세탁기를 공동으로 사용해야 하는데, 규칙이 엄격하게 정해져 있지 않으면 본인이 원하는 시간에 사용하기 힘듦
@@ -46,7 +46,7 @@ LaundryReservation-Project
 ## 4.6 실시간 이용현황
 ![실시간 예약 화면](https://user-images.githubusercontent.com/111573823/211278847-59e4585e-3715-4673-86f7-651e5b15b49f.PNG)
 ## 4.7 QnA
-![QnA](https://user-images.githubusercontent.com/111573823/211278917-cff7d72b-c5b8-4232-84b9-be6223faf743.PNG)
+![QnA](https://user-images.githubusercontent.com/111573823/211283865-1b593aff-aa98-4cd3-844f-d1ad4d4c4f27.PNG)
 
 # 5. 결론 및 기대효과
 + 예약 기능을 통해 사용자는 본인의 사용 순서를 명확하게 인지할 수 있음
