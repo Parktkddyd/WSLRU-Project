@@ -2,14 +2,14 @@ WSLRU(WebSite to Serve Laundry RealTime Usage)
 ==========================
 # 목차
 
-### 1. 개요
-### 2. 목적 및 기능
-### 3. 주요 설계
-+ ### 3.1 기능 명세서
-+ ### 3.2 ERD
-### 4. 화면 데모
-### 5. 결론 및 기대효과
-### 6. 참고 자료
+- [1. 개요](#1-개요)
+- [2. 목적 및 기능](#2-목적-및-기능)
+- [3. 주요 설계](#3-주요-설계)
+- [3.1 기능 명세서](#31-기능-명세서)
+- [3.2 ERD](#32-erd)
+- [4. 화면 데모](#4-화면-데모)
+- [5. 결론 및 기대효과](#5-결론-및-기대효과)
+- [6. 참고 자료](#6-참고-자료)
 #
 
 # 1. 개요
@@ -32,7 +32,7 @@ WSLRU(WebSite to Serve Laundry RealTime Usage)
 ## 3.2 ERD
 ![image](https://user-images.githubusercontent.com/111573823/211275582-5f734af3-def7-48bd-94a3-2855531f0eb0.png)
 
-# 4. 주요 화면
+# 4. 화면 데모
 ## 4.1 회원가입
 ![회원가입](https://user-images.githubusercontent.com/111573823/211278626-09fa51d5-7078-46e9-96f7-0b3be30f905a.PNG)
 ## 4.2 로그인
@@ -55,7 +55,7 @@ WSLRU(WebSite to Serve Laundry RealTime Usage)
 
 + 불필요한 동선 낭비를 제거함으로써 결과적으로 사용자는 시간을 절약할 수 있음
 
-# 6. 참고자료
+# 6. 참고 자료
 + Programiz, "Queue Data Structure", https://www.programiz.com/dsa/queue
 
 + W3 schools,  "Java HashMap", https://www.w3schools.com/java/java_hashmap.asp
